@@ -1,0 +1,10 @@
+.DS_Store
+.init
+*.swp
+.project
+.classpath
+.settings
+.metadata
+rebel.xml
+target
+test-output
