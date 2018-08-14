@@ -1,3 +1,4 @@
+package br.com.rfms.steps;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,7 +12,7 @@ import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
 
 
-public class AprenderCucumber {
+public class AprenderCucumberSteps {
 
 //	public void que_criei_o_arquivo_corretamente() throws Throwable {
 	@Dado("^que criei o arquivo corretamente$")
