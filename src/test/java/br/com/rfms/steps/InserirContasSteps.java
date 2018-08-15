@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import cucumber.api.PendingException;
+import cucumber.api.java.After;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
@@ -39,7 +39,7 @@ public class InserirContasSteps {
 	@Então("^visualizo a página inicial$")
 	public void visualizo_a_página_inicial() throws Throwable {
 		String texto = driver.findElement(By.xpath("/html/body/div[@class='alert alert-success']")).getText();
-		Assert.assertEquals("Bem vindo, Renato!", texto);
+		Assert.assertEquals (texto.contains("Bem vindo"), true);
 	}
 
 	@Quando("^seleciono Contas$")
@@ -64,21 +64,24 @@ public class InserirContasSteps {
 
 	@Então("^a conta é inserida com sucesso$")
 	public void a_conta_é_inserida_com_sucesso() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new PendingException();
+		String texto = driver.findElement(By.xpath("/html/body/div[@class='alert alert-success']")).getText();
+		Assert.assertEquals(texto.contains("Conta adicionada com sucesso!"), true);
 	}
-
+	
 	@Então("^sou notificar que o nome da conta é obrigatório$")
 	public void sou_notificar_que_o_nome_da_conta_é_obrigatório() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new PendingException();
+		String texto = driver.findElement(By.  xpath("/html/body/div[@class='alert alert-danger']")).getText();
+		Assert.assertEquals(texto.contains("Informe o nome da conta"), true);
 	}
 
 	@Então("^sou notificado que já existe uma conta com esse nome$")
 	public void sou_notificado_que_já_existe_uma_conta_com_esse_nome() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new PendingException();
+		String texto = driver.findElement(By.  xpath("/html/body/div[@class='alert alert-danger']")).getText();
+		Assert.assertEquals(true, texto.contains("Já existe uma conta com esse nome!"));
 	}
 	
-
+	@After
+	public void fechoONavegador() throws Throwable {
+	    driver.close();
+	}
 }
