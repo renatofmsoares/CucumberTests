@@ -1,10 +1,20 @@
 package br.com.rfms.steps;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
@@ -61,6 +71,12 @@ public class InserirContasSteps {
 	public void seleciono_Salvar() throws Throwable {
 		driver.findElement(By.xpath("/html/body/div[2]/form/div[2]/button")).click();
 	}
+	
+	@Então("^recebo a mensagem \"(.*)\"$")
+	public void receboAMensagem(String arg1) throws Throwable {
+		String texto = driver.findElement(By.xpath("//div[starts-with(@class, 'alert alert-')]")).getText();
+		Assert.assertEquals (arg1, texto);
+	}
 
 	@Então("^a conta é inserida com sucesso$")
 	public void a_conta_é_inserida_com_sucesso() throws Throwable {
@@ -80,7 +96,25 @@ public class InserirContasSteps {
 		Assert.assertEquals(true, texto.contains("Já existe uma conta com esse nome!"));
 	}
 	
-	@After
+	@After(order=1)
+	public void screenshot(Scenario cenario) {
+		File file = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+		Date date = new Date();
+		String formattedDate = dateFormat.format(date);
+		try {
+			FileUtils.copyFile(file, new File("target/screenshots/"+formattedDate+cenario.getId()+".png"));
+			System.out.println("[TESTING] cenario.getId() = "+ cenario.getId());
+			System.out.println("[TESTING] cenario.getName() = "+ cenario.getName());
+			System.out.println("[TESTING] cenario.getStatus() = "+ cenario.getStatus());
+			System.out.println("[TESTING] cenario.getClass() = "+ cenario.getClass());
+			System.out.println("[TESTING] cenario.getSourceTagNames() = "+ cenario.getSourceTagNames());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@After(order=0)
 	public void fechoONavegador() throws Throwable {
 	    driver.close();
 	}
